@@ -1,0 +1,31 @@
+name: Deploy GitHub Pages on Windows
+
+on:
+  push:
+    branches:
+      - main  # 또는 귀하의 프로젝트의 기본 브랜치 이름을 사용하세요, 예를 들어 master
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest  # 윈도우 최신 버전에서 작업 실행
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # 프로젝트에 필요한 Node.js의 버전
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build  # 빌드 명령, 프로젝트 설정에 따라 변경 필요
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build  # 빌드 결과물이 위치하는 디렉토리, 프로젝트 설정에 따라 변경 필요
